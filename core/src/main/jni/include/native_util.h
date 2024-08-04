@@ -78,10 +78,10 @@ inline bool RegisterNativeMethodsInternal(JNIEnv *env, std::string_view class_na
 
 static dev_t dev = 0;
 static ino_t inode = 0;
-static std::vector<std::pair<std::string_view, void **>> plt_hook_saved = {};
+static std::vector<std::pair<const char *, void **>> plt_hook_saved = {};
 
 inline int HookArtFunction(void *original, void *callback, void **backup, bool save = true) {
-    auto symbol = *reinterpret_cast<std::string_view *>(original);
+    auto symbol = reinterpret_cast<const char *>(original);
     if (dev == 0 || inode == 0) {
         auto libart_path = GetArt()->name();
         for (auto map : lsplt::MapInfo::Scan()) {
@@ -98,7 +98,7 @@ inline int HookArtFunction(void *original, void *callback, void **backup, bool s
         if (save) plt_hook_saved.emplace_back(symbol, backup);
     } else if (auto addr = GetArt()->getSymbAddress(symbol); addr) {
         Dl_info info;
-        if (dladdr(addr, &info) && info.dli_sname != nullptr && info.dli_sname == symbol)
+        if (dladdr(addr, &info) && info.dli_sname != nullptr && strcmp(info.dli_sname, symbol) == 0)
             HookFunction(addr, callback, backup);
     } else if (*backup == nullptr && isDebug) {
         LOGW("Failed to {} Art symbol {}", save ? "hook" : "unhook", symbol);
@@ -107,7 +107,7 @@ inline int HookArtFunction(void *original, void *callback, void **backup, bool s
 }
 
 inline int UnhookArtFunction(void *original) {
-    std::string_view func_name = *reinterpret_cast<std::string_view *>(original);
+    std::string_view func_name = reinterpret_cast<const char *>(original);
     auto hook_iter = std::find_if(plt_hook_saved.begin(), plt_hook_saved.end(),
                                   [func_name](auto record) { return record.first == func_name; });
 
