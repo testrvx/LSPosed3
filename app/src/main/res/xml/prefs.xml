@@ -92,7 +92,7 @@
             android:title="@string/settings_disable_verbose_log" />
 
         <rikka.material.preference.MaterialSwitchPreference
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:icon="@drawable/ic_outline_assignment_24"
             android:key="force_enable_log"
             android:persistent="false"
