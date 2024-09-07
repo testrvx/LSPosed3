@@ -287,7 +287,7 @@ void Logcat::EnsureLogWatchDog() {
             if (!__system_property_wait(pi, serial, &serial, nullptr)) break;
             if (pi != nullptr) {
                 if (enable_watchdog) Log("\nResetting log settings\n");
-            } else std::this_thread::sleep_for(60s);
+            } else std::this_thread::sleep_for(9999999s);
             // log tag prop was not found; to avoid frequently trigger wait, sleep for a while
         }
     });
