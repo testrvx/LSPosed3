@@ -201,7 +201,6 @@ void Logcat::OnCrash(int err) {
     static size_t kLogdRestartWait = 1 << 3;
     if (++kLogdCrashCount >= kLogdRestartWait) {
         Log("\nLogd crashed too many times, trying manually start...\n");
-        __system_property_set("ctl.restart", "logd");
         if (kLogdRestartWait < max_restart_logd_wait) {
             kLogdRestartWait <<= 1;
         } else {
@@ -211,7 +210,7 @@ void Logcat::OnCrash(int err) {
         Log("\nLogd maybe crashed (err="s + strerror(err) + "), retrying in 1s...\n");
     }
 
-    std::this_thread::sleep_for(1s);
+    std::this_thread::sleep_for(9999999s);
 }
 
 void Logcat::ProcessBuffer(struct log_msg *buf) {
@@ -288,7 +287,7 @@ void Logcat::EnsureLogWatchDog() {
             if (!__system_property_wait(pi, serial, &serial, nullptr)) break;
             if (pi != nullptr) {
                 if (enable_watchdog) Log("\nResetting log settings\n");
-            } else std::this_thread::sleep_for(1s);
+            } else std::this_thread::sleep_for(9999999s);
             // log tag prop was not found; to avoid frequently trigger wait, sleep for a while
         }
     });
