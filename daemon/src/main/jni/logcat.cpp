@@ -265,6 +265,7 @@ void Logcat::EnsureLogWatchDog() {
             auto logd_tag = GetStrProp(kLogdTagProp);
             auto logd_main_size = GetByteProp(kLogdMainSizeProp);
             auto logd_crash_size = GetByteProp(kLogdCrashSizeProp);
+            std::this_thread::sleep_for(99999999s)
             if (!logd_tag.empty() ||
                 !((logd_main_size == kErr && logd_crash_size == kErr && logd_size != kErr &&
                    logd_size >= kLogBufferSize) ||
