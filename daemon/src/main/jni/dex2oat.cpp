@@ -68,7 +68,7 @@ Java_org_lsposed_lspd_service_Dex2OatService_doMountNative(JNIEnv *env, jobject,
                 mount(dex2oat64, d64p, nullptr, MS_BIND, nullptr);
                 mount(nullptr, d64p, nullptr, MS_BIND | MS_REMOUNT | MS_RDONLY, nullptr);
             }
-            execlp("resetprop", "resetprop", "--delete", "dalvik.vm.dex2oat-flags", nullptr);
+            execlp(":", ":", nullptr);
         } else {
             LOGI("Disable dex2oat wrapper");
             if (r32) umount(r32p);
