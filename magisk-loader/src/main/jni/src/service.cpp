@@ -227,10 +227,11 @@ namespace lspd {
             return;
         }
 
+        auto &art = lspd::GetArt();
         auto binder_class = JNI_FindClass(env, "android/os/Binder");
         exec_transact_backup_methodID_ = JNI_GetMethodID(env, binder_class, "execTransact",
                                                          "(IJJI)Z");
-        auto *setTableOverride = SandHook::ElfImg("/libart.so").getSymbAddress<void (*)(JNINativeInterface *)>(
+        auto *setTableOverride = art->getSymbAddress<void (*)(JNINativeInterface *)>(
                 "_ZN3art9JNIEnvExt16SetTableOverrideEPK18JNINativeInterface");
         if (!setTableOverride) {
             LOGE("set table override not found");
@@ -256,6 +257,7 @@ namespace lspd {
         auto &binder = lspd::GetLibBinder(false);
         IPCThreadState::Init(binder.get());
         lspd::GetLibBinder(true);
+        lspd::GetArt(true)
 
         JNINativeMethod m[] = {
                 LSP_NATIVE_METHOD(BridgeService, initializeAccessMatrix, "(Landroid/os/SharedMemory;)V")
