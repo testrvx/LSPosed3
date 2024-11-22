@@ -257,7 +257,7 @@ namespace lspd {
         auto &binder = lspd::GetLibBinder(false);
         IPCThreadState::Init(binder.get());
         lspd::GetLibBinder(true);
-        lspd::GetArt(true)
+        lspd::GetArt(true); 
 
         JNINativeMethod m[] = {
                 LSP_NATIVE_METHOD(BridgeService, initializeAccessMatrix, "(Landroid/os/SharedMemory;)V")
