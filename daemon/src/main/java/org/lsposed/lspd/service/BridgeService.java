@@ -126,17 +126,16 @@ public class BridgeService {
                 return;
             }
 
-            Parcel data = Parcel.obtain();
-            Parcel reply = Parcel.obtain();
             boolean res = false;
             // try at most three times
             for (int i = 0; i < 3; i++) {
+                Parcel data = Parcel.obtain();
+                Parcel reply = Parcel.obtain();
                 try {
                     data.writeInterfaceToken(DESCRIPTOR);
                     data.writeInt(ACTION.ACTION_SEND_BINDER.ordinal());
                     Log.v(TAG, "binder " + binder.toString());
                     data.writeStrongBinder(binder);
-                    data.writeParcelable(ConfigManager.getInstance().getAccessMatrixMemory(), 0);
                     if (bridgeService == null) break;
                     res = bridgeService.transact(TRANSACTION_CODE, data, reply, 0);
                     reply.readException();
