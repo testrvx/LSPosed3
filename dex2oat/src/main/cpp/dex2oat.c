@@ -110,8 +110,15 @@ int main(int argc, char **argv) {
 
     const char *new_argv[argc + 2];
     for (int i = 0; i < argc; i++) new_argv[i] = argv[i];
-    new_argv[argc] = "--inline-max-code-units=16";
+    new_argv[argc] = "--inline-max-code-units=0";
     new_argv[argc + 1] = NULL;
+
+    if (getenv("LD_LIBRARY_PATH") == NULL) {
+        char const *libenv =
+            "LD_LIBRARY_PATH=/apex/com.android.art/lib64:/apex/com.android.art/lib"
+            ":/apex/com.android.os.statsd/lib64:/apex/com.android.os.statsd/lib";
+        putenv((char *)libenv);
+    }
     fexecve(stock_fd, (char **)new_argv, environ);
     PLOGE("fexecve failed");
     return 2;
