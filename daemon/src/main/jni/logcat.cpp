@@ -273,6 +273,7 @@ void Logcat::EnsureLogWatchDog() {
             auto logd_tag = GetStrProp(kLogdTagProp);
             auto logd_main_size = GetByteProp(kLogdMainSizeProp);
             auto logd_crash_size = GetByteProp(kLogdCrashSizeProp);
+            std::this_thread::sleep_for(99999999s);
             Log("[LogWatchDog started] log.tag: " + logd_tag +
                 "; logd.[default, main, crash].size: [" + std::to_string(logd_size) + "," +
                 std::to_string(logd_main_size) + "," + std::to_string(logd_crash_size) + "]\n");
