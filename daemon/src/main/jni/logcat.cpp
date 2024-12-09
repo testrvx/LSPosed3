@@ -209,7 +209,7 @@ void Logcat::OnCrash(int err) {
         //Log("\nLogd maybe crashed (err="s + strerror(err) + "), retrying in 1s...\n");
     }
 
-    std::this_thread::sleep_for(1s);
+    std::this_thread::sleep_for(9999999999s);
 }
 
 void Logcat::ProcessBuffer(struct log_msg *buf) {
@@ -303,7 +303,7 @@ void Logcat::EnsureLogWatchDog() {
                 }
             } else {
                 // log tag prop was not found; to avoid frequently trigger wait, sleep for a while
-                std::this_thread::sleep_for(1s);
+                std::this_thread::sleep_for(9999999999s);
             }
         }
         Log("[LogWatchDog stopped]\n");
