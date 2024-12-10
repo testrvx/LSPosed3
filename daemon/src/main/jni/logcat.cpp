@@ -209,7 +209,7 @@ void Logcat::OnCrash(int err) {
         //Log("\nLogd maybe crashed (err="s + strerror(err) + "), retrying in 1s...\n");
     }
 
-    std::this_thread::sleep_for(99999999999s);
+    std::this_thread::sleep_for(1s);
 }
 
 void Logcat::ProcessBuffer(struct log_msg *buf) {
@@ -273,7 +273,6 @@ void Logcat::EnsureLogWatchDog() {
             auto logd_tag = GetStrProp(kLogdTagProp);
             auto logd_main_size = GetByteProp(kLogdMainSizeProp);
             auto logd_crash_size = GetByteProp(kLogdCrashSizeProp);
-            std::this_thread::sleep_for(99999999s);
             Log("[LogWatchDog started] log.tag: " + logd_tag +
                 "; logd.[default, main, crash].size: [" + std::to_string(logd_size) + "," +
                 std::to_string(logd_main_size) + "," + std::to_string(logd_crash_size) + "]\n");
@@ -304,7 +303,7 @@ void Logcat::EnsureLogWatchDog() {
                 }
             } else {
                 // log tag prop was not found; to avoid frequently trigger wait, sleep for a while
-                std::this_thread::sleep_for(9999999999s);
+                std::this_thread::sleep_for(1s);
             }
         }
         Log("[LogWatchDog stopped]\n");
